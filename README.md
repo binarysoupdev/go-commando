@@ -19,8 +19,7 @@ func main() {
 	}
 
 	if err := runner.RunCommand(os.Args[1], os.Args[2:]); err != nil {
-		style.BoldError.Print("ERROR: ")
-		fmt.Println(err)
+		fmt.Printf("%s %s\n", style.BoldError.Sprint("ERROR:"), err.Error())
 	}
 }
 ```

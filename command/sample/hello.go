@@ -24,6 +24,10 @@ func (cmd HelloCommand) Run(args []string) error {
 	name := cmd.Flags.String("name", "World", "name to use when saying hello")
 	cmd.Flags.Parse(args)
 
+	if *name == "" {
+		return fmt.Errorf("name cannot be empty")
+	}
+
 	fmt.Printf("Hello %s!\n", *name)
 	return nil
 }
