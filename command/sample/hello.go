@@ -4,19 +4,18 @@ package sample
 import (
 	"fmt"
 
-	"github.com/binary-soup/go-commando/command"
-	"github.com/binary-soup/go-commando/style"
+	"github.com/binarysoupdev/go-commando/command"
 )
 
 // Sample hello command for printing "Hello" to the console.
 type HelloCommand struct {
-	command.CommandBase
+	command.FlagCommandBase
 }
 
 // Creates a new HelloCommand.
-func NewHelloCommand() HelloCommand {
-	return HelloCommand{
-		CommandBase: command.NewCommandBase("hello", "prints hello {name} to the console"),
+func NewHelloCommand() *HelloCommand {
+	return &HelloCommand{
+		FlagCommandBase: command.NewFlagCommandBase("hello", "prints \"Hello {name}\" to the console"),
 	}
 }
 
@@ -25,8 +24,6 @@ func (cmd HelloCommand) Run(args []string) error {
 	name := cmd.Flags.String("name", "World", "name to use when saying hello")
 	cmd.Flags.Parse(args)
 
-	boldYellow := style.New(style.Bold, style.Yellow)
-
-	fmt.Printf("Hello %s!\n", boldYellow.Format(*name))
+	fmt.Printf("Hello %s!\n", *name)
 	return nil
 }

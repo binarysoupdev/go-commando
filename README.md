@@ -1,4 +1,4 @@
-# go-commando [![GoDoc](https://godoc.org/github.com/binary-soup/go-commando?status.svg)](https://pkg.go.dev/github.com/binary-soup/go-commando)
+# go-commando [![GoDoc](https://godoc.org/github.com/binarysoupdev/go-commando?status.svg)](https://pkg.go.dev/github.com/binarysoupdev/go-commando)
 
 The `go-command` module provides several types for managing multiple commands within the same command-line application. This approach to software architecture allows a single application to perform many tasks while ensuring the various commands stay modular and respect the _separation of concerns_ principal.
 
