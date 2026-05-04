@@ -27,7 +27,7 @@ func (cmd FlagCommandBase) GetName() string {
 
 // Command interface implementation. Prints usage using the command's Name and Description fields.
 func (cmd FlagCommandBase) PrintUsage() {
-	fmt.Printf("%s | %s\n", style.BoldInfo.Sprint(cmd.Name), cmd.Description)
+	fmt.Printf("%s\t| %s\n", style.BoldInfo.Sprint(cmd.Name), cmd.Description)
 }
 
 func (cmd *FlagCommandBase) Initialize() {
