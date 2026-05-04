@@ -10,6 +10,8 @@ import (
 type CommandSuite[T command.Command] struct {
 	suite.Suite
 	Cmd T
+
+	result error
 }
 
 // Creates a new NewCommandSuite for the given command interface.
@@ -19,22 +21,16 @@ func NewCommandSuite[T command.Command](cmd T) CommandSuite[T] {
 	}
 }
 
-// Runs the command with the provided args and requires it passes (returns no error).
-func (s *CommandSuite[T]) RequireCommandPass(args []string) {
+func (s *CommandSuite[T]) RunCommand(args ...string) {
 	s.Cmd.Initialize()
-
-	err := s.Cmd.Run(args)
-	s.Require().NoError(err)
+	s.result = s.Cmd.Run(args)
 }
 
-// Runs the command with the provided args and requires it fails (returns an error).
-//
-// Also asserts the error message contains all the substrings.
-func (s *CommandSuite[T]) RequireCommandFail(args []string, msg string) {
-	s.Cmd.Initialize()
+func (s *CommandSuite[T]) RequireResultPass() {
+	s.Require().NoError(s.result)
+}
 
-	err := s.Cmd.Run(args)
-
-	s.Require().Error(err)
-	s.Require().ErrorContains(err, msg)
+func (s *CommandSuite[T]) RequireResultFail(err string) {
+	s.Require().Error(s.result)
+	s.Require().ErrorContains(s.result, err)
 }
