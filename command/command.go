@@ -1,17 +1,16 @@
 // Provides several types for managing multiple commands within a single application.
 package command
 
-// The interface definition of a command.
 type Command interface {
-	// Returns the command's name (essentially it's identifier).
-	GetName() string
+	// Returns the command's identifier.
+	GetID() string
 
-	// Prints usage information.
-	PrintUsage()
+	// Get the command's usage string.
+	GetUsage() string
 
 	// Initializes the command before it's run.
 	Initialize()
 
-	// Runs the command using the provided args and returns any error.
+	// Runs the command using the provided args and return any errors.
 	Run(args []string) error
 }

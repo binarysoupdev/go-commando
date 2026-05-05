@@ -1,35 +1,38 @@
 package command
 
-import "fmt"
+import (
+	"fmt"
 
-// Runner stores multiple commands and provides methods for running by name.
+	"github.com/binarysoupdev/got-style/style"
+)
+
 type Runner struct {
-	cmds  map[string]Command
-	names []string
+	cmds map[string]Command
+	ids  []string
 }
 
 // Creates a new runner using the provided commands.
 func NewRunner(commands ...Command) Runner {
 	cmds := map[string]Command{}
-	names := make([]string, len(commands))
+	ids := make([]string, len(commands))
 
 	for i, cmd := range commands {
-		cmds[cmd.GetName()] = cmd
-		names[i] = cmd.GetName()
+		cmds[cmd.GetID()] = cmd
+		ids[i] = cmd.GetID()
 	}
 
 	return Runner{
-		cmds:  cmds,
-		names: names,
+		cmds: cmds,
+		ids:  ids,
 	}
 }
 
-// Run the command that matches the provided name (case sensitive) with the provided arguments.
+// Run the command that matches the provided id with the provided arguments.
 // Returns any run errors, or an error if the command was not found.
-func (r Runner) RunCommand(name string, args []string) error {
-	cmd, ok := r.cmds[name]
+func (r Runner) RunCommand(id string, args []string) error {
+	cmd, ok := r.cmds[id]
 	if !ok {
-		return fmt.Errorf("unknown command \"%s\"", name)
+		return fmt.Errorf("unknown command \"%s\"", id)
 	}
 
 	cmd.Initialize()
@@ -38,7 +41,7 @@ func (r Runner) RunCommand(name string, args []string) error {
 
 // Print the usage for all commands to the console.
 func (r Runner) ListCommands() {
-	for _, name := range r.names {
-		r.cmds[name].PrintUsage()
+	for _, id := range r.ids {
+		fmt.Printf("%s\t| %s\n", style.BoldInfo.Sprint(id), r.cmds[id].GetUsage())
 	}
 }
