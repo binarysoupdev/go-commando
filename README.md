@@ -1,8 +1,54 @@
-# go-commando [![GoDoc](https://godoc.org/github.com/binary-soup/go-commando?status.svg)](https://pkg.go.dev/github.com/binary-soup/go-commando)
+# go-commando [![GoDoc](https://godoc.org/github.com/binarysoupdev/go-commando?status.svg)](https://pkg.go.dev/github.com/binarysoupdev/go-commando)
 
-The `go-command` module provides several types for managing multiple commands within the same command-line application. This approach to software architecture allows a single application to perform many tasks while ensuring the various commands stay modular and respect the _separation of concerns_ principal.
+The `go-commando` module provides tools and testing utilities for creating and testing modular types that encapsulate distinct program flow. Inspired by the _separation of concerns_ design principal.
 
 ## Basic Usage
+
+### The Command Interface
+
+```go
+type Command interface {
+	// Get the command's identifier.
+	GetID() string
+
+	// Get the command's usage string.
+	GetUsage() string
+
+	// Initializes the command before it's run.
+	Initialize()
+
+	// Run the command using the provided arguments and return any errors.
+	Run(args []string) error
+}
+```
+
+### A Sample Flag-Based Command
+
+```go
+type HelloCommand struct {
+	command.FlagCommandBase
+}
+
+func NewHelloCommand() *HelloCommand {
+	return &HelloCommand{
+		FlagCommandBase: command.NewFlagCommandBase("hello", "prints \"Hello {name}\" to the console"),
+	}
+}
+
+func (cmd HelloCommand) Run(args []string) error {
+	name := cmd.Flags.String("name", "World", "name to use when saying hello")
+	cmd.Flags.Parse(args)
+
+	if *name == "" {
+		return fmt.Errorf("name cannot be empty")
+	}
+
+	fmt.Printf("Hello %s!\n", *name)
+	return nil
+}
+```
+
+### Sample `main` Function
 
 ```go
 func main() {
@@ -19,8 +65,7 @@ func main() {
 	}
 
 	if err := runner.RunCommand(os.Args[1], os.Args[2:]); err != nil {
-		style.BoldError.Print("ERROR: ")
-		fmt.Println(err)
+		fmt.Printf("%s %s\n", style.BoldError.Sprint("ERROR:"), err.Error())
 	}
 }
 ```
