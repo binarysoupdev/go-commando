@@ -11,7 +11,7 @@ type Runner struct {
 	ids  []string
 }
 
-// Creates a new runner using the provided commands.
+// Create a new runner using the provided commands.
 func NewRunner(commands ...Command) Runner {
 	cmds := map[string]Command{}
 	ids := make([]string, len(commands))
@@ -27,8 +27,8 @@ func NewRunner(commands ...Command) Runner {
 	}
 }
 
-// Run the command that matches the provided id with the provided arguments.
-// Returns any run errors, or an error if the command was not found.
+// Initialize then run the command with the provided id and arguments.
+// Return any run errors, or an error if the command was not found.
 func (r Runner) RunCommand(id string, args []string) error {
 	cmd, ok := r.cmds[id]
 	if !ok {

@@ -1,4 +1,3 @@
-// Provides sample commands used to demonstrate the command package.
 package sample
 
 import (
@@ -12,14 +11,14 @@ type HelloCommand struct {
 	command.FlagCommandBase
 }
 
-// Creates a new HelloCommand.
+// Create a new HelloCommand.
 func NewHelloCommand() *HelloCommand {
 	return &HelloCommand{
 		FlagCommandBase: command.NewFlagCommandBase("hello", "prints \"Hello {name}\" to the console"),
 	}
 }
 
-// Run the Hello commands. See usage string for details.
+// Run the command. See usage string for details.
 func (cmd HelloCommand) Run(args []string) error {
 	name := cmd.Flags.String("name", "World", "name to use when saying hello")
 	cmd.Flags.Parse(args)

@@ -5,32 +5,33 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// CommandSuite is a test suite for commands.
-// Provides helpers for running the command with different assertions.
+// CommandSuite is a testify test suite for commands.
 type CommandSuite[T command.Command] struct {
 	suite.Suite
-	Cmd T
-
+	Cmd    T
 	result error
 }
 
-// Creates a new NewCommandSuite for the given command interface.
+// Create a new NewCommandSuite for the given command interface.
 func NewCommandSuite[T command.Command](cmd T) CommandSuite[T] {
 	return CommandSuite[T]{
 		Cmd: cmd,
 	}
 }
 
+// Run the command with the provided arguments and cache the result.
 func (s *CommandSuite[T]) RunCommand(args ...string) {
 	s.Cmd.Initialize()
 	s.result = s.Cmd.Run(args)
 }
 
+// Assert that the command returned no error.
 func (s *CommandSuite[T]) RequireResultPass() {
 	s.Require().NoError(s.result)
 }
 
-func (s *CommandSuite[T]) RequireResultFail(err string) {
+// Assert the command returned an error that contains the provided message.
+func (s *CommandSuite[T]) RequireResultFail(msg string) {
 	s.Require().Error(s.result)
-	s.Require().ErrorContains(s.result, err)
+	s.Assert().ErrorContains(s.result, msg)
 }

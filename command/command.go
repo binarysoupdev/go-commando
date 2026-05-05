@@ -1,8 +1,7 @@
-// Provides several types for managing multiple commands within a single application.
 package command
 
 type Command interface {
-	// Returns the command's identifier.
+	// Get the command's identifier.
 	GetID() string
 
 	// Get the command's usage string.
@@ -11,6 +10,6 @@ type Command interface {
 	// Initializes the command before it's run.
 	Initialize()
 
-	// Runs the command using the provided args and return any errors.
+	// Run the command using the provided arguments and return any errors.
 	Run(args []string) error
 }
