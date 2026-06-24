@@ -30,13 +30,12 @@ func (s *CommandSuite[T]) RunCommand(args ...string) {
 	}
 }
 
-// Assert that the command returned no error.
+// Require that the command returned no error.
 func (s *CommandSuite[T]) RequireResultPass() {
 	s.Require().NoError(s.result)
 }
 
-// Assert the command returned an error that contains the provided message.
+// Require the command returned an error that contains the provided message.
 func (s *CommandSuite[T]) RequireResultFail(msg string) {
-	s.Require().Error(s.result)
-	s.Assert().ErrorContains(s.result, msg)
+	s.Require().ErrorContains(s.result, msg)
 }
