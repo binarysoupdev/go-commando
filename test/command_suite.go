@@ -20,18 +20,22 @@ func NewCommandSuite[T command.Command](cmd T) CommandSuite[T] {
 }
 
 // Run the command with the provided arguments and cache the result.
+// Note: if initialize fails, that result is cached instead.
 func (s *CommandSuite[T]) RunCommand(args ...string) {
-	s.Cmd.Initialize()
-	s.result = s.Cmd.Run(args)
+	err := s.Cmd.Initialize()
+	if err != nil {
+		s.result = err
+	} else {
+		s.result = s.Cmd.Run(args)
+	}
 }
 
-// Assert that the command returned no error.
+// Require that the command returned no error.
 func (s *CommandSuite[T]) RequireResultPass() {
 	s.Require().NoError(s.result)
 }
 
-// Assert the command returned an error that contains the provided message.
+// Require the command returned an error that contains the provided message.
 func (s *CommandSuite[T]) RequireResultFail(msg string) {
-	s.Require().Error(s.result)
-	s.Assert().ErrorContains(s.result, msg)
+	s.Require().ErrorContains(s.result, msg)
 }

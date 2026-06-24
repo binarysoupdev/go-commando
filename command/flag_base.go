@@ -33,11 +33,14 @@ func (cmd FlagCommandBase) GetUsage() string {
 }
 
 // Create a new flagset and override its usage function.
-func (cmd *FlagCommandBase) Initialize() {
+// Never returns an error.
+func (cmd *FlagCommandBase) Initialize() error {
 	cmd.Flags = flag.NewFlagSet(cmd.Name, flag.ExitOnError)
 	cmd.Flags.Usage = func() {
 		fmt.Println(cmd.Description)
 		style.New(style.MAGENTA).Println("Options:")
 		cmd.Flags.PrintDefaults()
 	}
+
+	return nil
 }
