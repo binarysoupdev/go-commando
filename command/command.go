@@ -7,8 +7,8 @@ type Command interface {
 	// Get the command's usage string.
 	GetUsage() string
 
-	// Initializes the command before it's run.
-	Initialize()
+	// Initializes the command before it's run and return any errors.
+	Initialize() error
 
 	// Run the command using the provided arguments and return any errors.
 	Run(args []string) error

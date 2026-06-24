@@ -20,9 +20,14 @@ func NewCommandSuite[T command.Command](cmd T) CommandSuite[T] {
 }
 
 // Run the command with the provided arguments and cache the result.
+// Note: if initialize fails, that result is cached instead.
 func (s *CommandSuite[T]) RunCommand(args ...string) {
-	s.Cmd.Initialize()
-	s.result = s.Cmd.Run(args)
+	err := s.Cmd.Initialize()
+	if err != nil {
+		s.result = err
+	} else {
+		s.result = s.Cmd.Run(args)
+	}
 }
 
 // Assert that the command returned no error.
